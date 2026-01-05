@@ -96,6 +96,28 @@
               }
             },
             {
+              "id": "76894ab3-40dd-3f07-a9ef-c3d6ef26e530",
+              "name": "Potential ReDoS Vulnerability Due to Use of `z` Function Argument in RegExp() Call: Consider Hardcoded Regexes, Input Validation, or Regex Checking/Sanitization Libraries for Mitigation",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe provided JavaScript code snippet is vulnerable to a Regular Expression Denial of Service (ReDoS) attack due to the use of the `z` function argument in the `RegExp()` call. ReDoS is a type of Denial of Service (DoS) attack where a malicious user can cause the application to consume an excessive amount of resources (CPU and memory) by providing a specially crafted input that results in a very expensive regular expression evaluation.\n\nIn this case, the `z` function argument is used to construct a regular expression dynamically. If an attacker can control the input to the `z` function, they can craft a string that results in a regular expression that takes a very long time to evaluate, effectively causing a denial of service.\n\n## Mitigation\n\nTo mitigate this vulnerability, consider the following recommendations:\n\n1. **Hardcoded Regexes**: Where possible, use hardcoded regular expressions instead of dynamically constructing them. This ensures that the regular expressions are known to be safe and efficient.\n\n2. **Input Validation**: Validate all inputs to ensure they meet certain criteria before processing them. This can prevent an attacker from providing a malicious input that results in an expensive regular expression.\n\n3. **Regex Checking/Sanitization Libraries**: Use libraries that can check or sanitize regular expressions to ensure they are safe and efficient. These libraries can help identify and prevent potentially expensive regular expressions.\n\n## Code Fix\n\nThe specific fix would depend on the context and requirements of the application. However, a general fix would be to validate the `z` function argument before using it in the `RegExp()` call. For example:\n\n```javascript\nif (typeof z === 'string' && z.length < MAX_LENGTH) {\n  // Existing code...\n}\n```\n\nThis ensures that the `z` function argument is a string and its length is below a certain threshold, reducing the risk of a ReDoS attack.\n\n## Dependencies\n\nThe provided code snippet does not appear to have any explicit library dependencies.\n\n## References\n\n- [OWASP ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)"
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-400",
+                    "url": "https://cwe.mitre.org/data/definitions/400.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-400"
+                ]
+              }
+            },
+            {
               "id": "bccfa26f-ed1e-3f32-bbf3-3ff6a4309fba",
               "name": "\"Potential XSS Vulnerability from User-Controlled Data in HTML String\"",
               "helpUri": "https://www.glog.ai/",
@@ -118,56 +140,34 @@
               }
             },
             {
-              "id": "3e944970-a6ae-33dc-9ee9-3fc1ab04e87f",
-              "name": "\"Prevent Regex Denial of Service Vulnerability in User Input Comparison\"",
-              "helpUri": "https://www.glog.ai/",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nThe \"Prevent Regex Denial of Service Vulnerability in User Input Comparison\" vulnerability in JavaScript refers to a situation where a regular expression (regex) is used to compare or manipulate user input. If the regex is poorly written, it can lead to a situation known as catastrophic backtracking, which can cause the application to consume excessive resources, leading to a Denial of Service (DoS) condition.\n\nIn the provided code snippet, the vulnerability lies in the use of the regex `/^\\w+$/` to test the user input `a`. If `a` is a very long string, it can cause the application to hang or crash.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should avoid using regular expressions on untrusted user input. If you must use regex, ensure that they are well-written to avoid catastrophic backtracking. You can also limit the length of the user input to prevent excessive resource consumption.\n\n## Source Code Fix Recommendation\n\nInstead of using a regex to test the user input, you can use the `String.prototype.includes()` method to check if the user input contains only word characters. Here's how you can modify the code:\n\n```javascript\nif(!b && a && typeof a === 'string' && !a.includes(' ')){\n    this.selector=a;\n    this.context=r;\n    a=r.getElementsByTagName(a)\n}else return!b||b.jquery?(b||S).find(a):c(b).find(a);\n```\n\nIn this code, `!a.includes(' ')` checks if the user input `a` does not include any spaces, which is equivalent to checking if `a` contains only word characters.\n\n## Library Dependencies\n\nThe provided code snippet appears to be using the jQuery library, as indicated by the use of the `$` symbol and methods like `jquery`, `find`, and `isFunction`.\n\n## References\n\n- [OWASP Regex Denial of Service - ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)"
-              },
-              "properties": {
-                "cwe": [
-                  {
-                    "id": "CWE-400",
-                    "url": "https://cwe.mitre.org/data/definitions/400.html"
-                  }
-                ],
-                "severity": "MEDIUM",
-                "kind": "FAIL",
-                "tags": [
-                  "CWE-400"
-                ]
-              }
-            },
-            {
-              "id": "df7aca11-8d8a-3dff-9627-4093cbd876a5",
-              "name": "Potential ReDoS vulnerability due to RegExp() being called with a `a` function argument; recommended to use hardcoded regexes, input validation, or a regex checking/sanitization library like 'recheck'.",
-              "helpUri": "https://www.glog.ai/",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nThe code snippet provided is vulnerable to a Regular Expression Denial of Service (ReDoS) attack. This vulnerability occurs when the code uses the `RegExp()` function with a user-controlled input, which in this case is `a[0]`. An attacker can provide a specially crafted input that can cause the regular expression to take a very long time to evaluate, effectively causing a denial of service.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should avoid using user-controlled input directly in the `RegExp()` function. Instead, you should use hardcoded regular expressions, validate the input before using it in a regular expression, or use a library like 'recheck' that can check and sanitize regular expressions.\n\n## Source Code Fix Recommendation\n\nHere is a simple fix for the vulnerability:\n\n```javascript\nlet input = a[0];\n// Validate the input before using it in a regular expression\nif (/^[a-zA-Z0-9]+$/.test(input)) {\n    let d = new RegExp(\"(^|\\\\.)\" + input + \"(\\\\.|$)\");\n    c.each(c.data(this, \"events\").live || {}, function () {\n        d.test(this.type) && b++;\n    });\n    b < 1 && c.event.remove(this, input, na)\n}\n```\n\nIn this fix, the input is validated to ensure it only contains alphanumeric characters before it is used in a regular expression. This prevents an attacker from providing a specially crafted input that could cause a ReDoS attack.\n\n## Library Dependencies\n\nThe code snippet provided appears to use the jQuery library, as indicated by the use of the `c.each()` and `c.data()` functions.\n\n## References\n\n- [OWASP ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)\n\nPlease note that the links provided are accessible to anonymous users at the time of writing this report."
-              },
-              "properties": {
-                "cwe": [
-                  {
-                    "id": "CWE-400",
-                    "url": "https://cwe.mitre.org/data/definitions/400.html"
-                  }
-                ],
-                "severity": "MEDIUM",
-                "kind": "FAIL",
-                "tags": [
-                  "CWE-400"
-                ]
-              }
-            },
-            {
               "id": "8cabf3e7-68d4-3239-b49f-06513726a50b",
               "name": "\"Safeguard Regex Against User Input-Induced Denial of Service Vulnerability\"",
               "helpUri": "https://www.glog.ai/",
               "help": {
                 "text": "",
                 "markdown": "## Description\n\nThe \"Safeguard Regex Against User Input-Induced Denial of Service Vulnerability\" in JavaScript refers to a situation where a regular expression (regex) can cause a very high CPU load. If an attacker can control a part of the regular expression, they can use it to cause a Denial of Service (DoS) attack. This is also known as a ReDoS attack.\n\nThis vulnerability can occur when a regular expression takes a significant amount of time to process. This can happen when the regex uses a lot of grouping with repetition, back-references, and both leading and trailing context. An attacker can exploit this by providing a specially crafted input that takes a long time to process, effectively causing a DoS attack.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should avoid using user input inside your regular expressions without proper sanitization and validation. You should also avoid using regular expressions that can result in excessive backtracking.\n\nIn the provided code, there doesn't seem to be a direct usage of regular expressions. However, if regular expressions were to be used in this context, they should be used carefully.\n\n## Source Code Fix Recommendation\n\nWithout a specific regular expression in the provided code, it's hard to provide a specific fix. However, here's a general advice:\n\nIf you have a regular expression like this:\n\n```javascript\nvar regex = new RegExp(userInput);\n```\n\nYou should sanitize and validate the `userInput` before using it:\n\n```javascript\nvar sanitizedInput = sanitize(userInput); // Implement this function\nvar validatedInput = validate(sanitizedInput); // Implement this function\nif (validatedInput) {\n  var regex = new RegExp(validatedInput);\n}\n```\n\n## Library Dependencies\n\nThe provided code seems to be using the jQuery library, as indicated by the usage of the `$` symbol.\n\n## References\n\n- [OWASP ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)"
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-400",
+                    "url": "https://cwe.mitre.org/data/definitions/400.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-400"
+                ]
+              }
+            },
+            {
+              "id": "3e944970-a6ae-33dc-9ee9-3fc1ab04e87f",
+              "name": "\"Prevent Regex Denial of Service Vulnerability in User Input Comparison\"",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe \"Prevent Regex Denial of Service Vulnerability in User Input Comparison\" vulnerability in JavaScript refers to a situation where a regular expression (regex) is used to compare or manipulate user input. If the regex is poorly written, it can lead to a situation known as catastrophic backtracking, which can cause the application to consume excessive resources, leading to a Denial of Service (DoS) condition.\n\nIn the provided code snippet, the vulnerability lies in the use of the regex `/^\\w+$/` to test the user input `a`. If `a` is a very long string, it can cause the application to hang or crash.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should avoid using regular expressions on untrusted user input. If you must use regex, ensure that they are well-written to avoid catastrophic backtracking. You can also limit the length of the user input to prevent excessive resource consumption.\n\n## Source Code Fix Recommendation\n\nInstead of using a regex to test the user input, you can use the `String.prototype.includes()` method to check if the user input contains only word characters. Here's how you can modify the code:\n\n```javascript\nif(!b && a && typeof a === 'string' && !a.includes(' ')){\n    this.selector=a;\n    this.context=r;\n    a=r.getElementsByTagName(a)\n}else return!b||b.jquery?(b||S).find(a):c(b).find(a);\n```\n\nIn this code, `!a.includes(' ')` checks if the user input `a` does not include any spaces, which is equivalent to checking if `a` contains only word characters.\n\n## Library Dependencies\n\nThe provided code snippet appears to be using the jQuery library, as indicated by the use of the `$` symbol and methods like `jquery`, `find`, and `isFunction`.\n\n## References\n\n- [OWASP Regex Denial of Service - ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)"
               },
               "properties": {
                 "cwe": [
@@ -206,46 +206,24 @@
               }
             },
             {
-              "id": "76894ab3-40dd-3f07-a9ef-c3d6ef26e530",
-              "name": "Potential ReDoS Vulnerability Due to Use of `z` Function Argument in RegExp() Call: Consider Hardcoded Regexes, Input Validation, or Regex Checking/Sanitization Libraries for Mitigation",
+              "id": "586b2343-5424-32af-9edb-06b1a0877da6",
+              "name": "XSS Vulnerability in User-Controlled HTML Data",
               "helpUri": "https://www.glog.ai/",
               "help": {
                 "text": "",
-                "markdown": "## Description\n\nThe provided JavaScript code snippet is vulnerable to a Regular Expression Denial of Service (ReDoS) attack due to the use of the `z` function argument in the `RegExp()` call. ReDoS is a type of Denial of Service (DoS) attack where a malicious user can cause the application to consume an excessive amount of resources (CPU and memory) by providing a specially crafted input that results in a very expensive regular expression evaluation.\n\nIn this case, the `z` function argument is used to construct a regular expression dynamically. If an attacker can control the input to the `z` function, they can craft a string that results in a regular expression that takes a very long time to evaluate, effectively causing a denial of service.\n\n## Mitigation\n\nTo mitigate this vulnerability, consider the following recommendations:\n\n1. **Hardcoded Regexes**: Where possible, use hardcoded regular expressions instead of dynamically constructing them. This ensures that the regular expressions are known to be safe and efficient.\n\n2. **Input Validation**: Validate all inputs to ensure they meet certain criteria before processing them. This can prevent an attacker from providing a malicious input that results in an expensive regular expression.\n\n3. **Regex Checking/Sanitization Libraries**: Use libraries that can check or sanitize regular expressions to ensure they are safe and efficient. These libraries can help identify and prevent potentially expensive regular expressions.\n\n## Code Fix\n\nThe specific fix would depend on the context and requirements of the application. However, a general fix would be to validate the `z` function argument before using it in the `RegExp()` call. For example:\n\n```javascript\nif (typeof z === 'string' && z.length < MAX_LENGTH) {\n  // Existing code...\n}\n```\n\nThis ensures that the `z` function argument is a string and its length is below a certain threshold, reducing the risk of a ReDoS attack.\n\n## Dependencies\n\nThe provided code snippet does not appear to have any explicit library dependencies.\n\n## References\n\n- [OWASP ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)"
+                "markdown": "## Description\n\nCross-Site Scripting (XSS) vulnerabilities occur when an application includes untrusted data in a new web page without proper validation or escaping, or updates an existing web page with user-supplied data using a browser API that can create HTML or JavaScript. XSS allows attackers to execute scripts in the victim's browser which can hijack user sessions, deface web sites, or redirect the user to malicious sites.\n\nIn the provided JavaScript code, the vulnerability lies in the fact that user-controlled HTML data is not being properly sanitized before being used. This can lead to an XSS attack if an attacker is able to inject malicious scripts into the HTML data.\n\n## Mitigation Advice\n\nTo mitigate XSS vulnerabilities, it is recommended to:\n\n1. Use frameworks that automatically escape XSS by design, such as Ruby on Rails, React JS, etc.\n2. Escape untrusted HTTP request data based on the context in the HTML output (body, attribute, JavaScript, CSS, or URL) will resolve Reflected and Stored XSS vulnerabilities.\n3. Apply context-sensitive encoding when modifying the browser document on the client side acts against DOM XSS.\n4. Enable a Content Security Policy (CSP) as a safety net to mitigate the impact of any escaped or unsanitized input.\n\n## Source Code Fix Recommendation\n\nThe specific fix would depend on the context of the code, but in general, you should always sanitize user input before using it. For example, if you're using jQuery, you can use the `text()` function to safely escape HTML content:\n\n```javascript\nlet userInput = \"<script>malicious code here</script>\";\n$(\"#someElement\").text(userInput); // Safely escapes HTML\n```\n\n## Library Dependencies\n\nThe provided code snippet seems to be using jQuery version 1.4.1.\n\n## References\n\n- [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)\n- [OWASP DOM based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html)\n- [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)"
               },
               "properties": {
                 "cwe": [
                   {
-                    "id": "CWE-400",
-                    "url": "https://cwe.mitre.org/data/definitions/400.html"
+                    "id": "CWE-79",
+                    "url": "https://cwe.mitre.org/data/definitions/79.html"
                   }
                 ],
                 "severity": "MEDIUM",
                 "kind": "FAIL",
                 "tags": [
-                  "CWE-400"
-                ]
-              }
-            },
-            {
-              "id": "791b4bb2-98f5-3b1f-bda7-586857ae79f4",
-              "name": "\"Logging Errors for Debugging and Security Monitoring in Empty Catch Block\"",
-              "helpUri": "https://www.glog.ai/",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nIn JavaScript, an empty catch block is a code block that catches an exception but does not contain any code to handle the exception. This is a vulnerability because it can lead to silent failures where errors occur but are not reported or logged, making debugging difficult. Additionally, it can also pose a security risk as it can hide potential security issues that are causing exceptions.\n\nIn the provided code snippet, the catch block is empty, which means that if an exception is thrown in the try block, it will be caught but not handled or logged.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to at least log the exception in the catch block. This can be done using `console.error()` for debugging purposes. For production code, it is recommended to use a more sophisticated logging solution that can log errors to a file or a logging service.\n\nIn addition, it is also recommended to handle the exception appropriately depending on the nature of the exception. This can involve retrying the operation, showing an error message to the user, or failing gracefully.\n\n## Source Code Fix Recommendation\n\nThe catch block can be modified to log the error as follows:\n\n```javascript\nc.ready);var a=false;try{a=z.frameElement==null}catch(b){console.error(b);}r.documentElement.doScroll&&a&&la()}}},isFunction:function(a){return $.call(a)===\"[object Function]\"},isArray:function(a){return $.call(a)===\"[object Array]\"},isPlainObject:function(a){if(!a||$.call(a)!==\"[object Object]\"||a.nodeType||a.setInterval)return false;if(a.constructor&&!aa.call(a,\"constructor\")&&!aa.call(a.constructor.prototype,\"isPrototypeOf\"))return false;var b;for(b in a);return b===v||aa.call(a,b)},isEmptyObject:function(a){for(var b in a)return false;\n```\n\n## Library Dependencies\n\nThe provided code snippet appears to be a part of a larger code base, possibly jQuery or a similar library. However, without the full context, it's hard to determine the exact dependencies.\n\n## References\n\n- [OWASP Top 10 - A6:2017-Security Misconfiguration](https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration)\n- [CWE-390: Detection of Error Condition Without Action](https://cwe.mitre.org/data/definitions/390.html)"
-              },
-              "properties": {
-                "cwe": [
-                  {
-                    "id": "CWE-390",
-                    "url": "https://cwe.mitre.org/data/definitions/390.html"
-                  }
-                ],
-                "severity": "MEDIUM",
-                "kind": "FAIL",
-                "tags": [
-                  "CWE-390"
+                  "CWE-79"
                 ]
               }
             },
@@ -272,12 +250,56 @@
               }
             },
             {
-              "id": "586b2343-5424-32af-9edb-06b1a0877da6",
-              "name": "XSS Vulnerability in User-Controlled HTML Data",
+              "id": "791b4bb2-98f5-3b1f-bda7-586857ae79f4",
+              "name": "\"Logging Errors for Debugging and Security Monitoring in Empty Catch Block\"",
               "helpUri": "https://www.glog.ai/",
               "help": {
                 "text": "",
-                "markdown": "## Description\n\nCross-Site Scripting (XSS) vulnerabilities occur when an application includes untrusted data in a new web page without proper validation or escaping, or updates an existing web page with user-supplied data using a browser API that can create HTML or JavaScript. XSS allows attackers to execute scripts in the victim's browser which can hijack user sessions, deface web sites, or redirect the user to malicious sites.\n\nIn the provided JavaScript code, the vulnerability lies in the fact that user-controlled HTML data is not being properly sanitized before being used. This can lead to an XSS attack if an attacker is able to inject malicious scripts into the HTML data.\n\n## Mitigation Advice\n\nTo mitigate XSS vulnerabilities, it is recommended to:\n\n1. Use frameworks that automatically escape XSS by design, such as Ruby on Rails, React JS, etc.\n2. Escape untrusted HTTP request data based on the context in the HTML output (body, attribute, JavaScript, CSS, or URL) will resolve Reflected and Stored XSS vulnerabilities.\n3. Apply context-sensitive encoding when modifying the browser document on the client side acts against DOM XSS.\n4. Enable a Content Security Policy (CSP) as a safety net to mitigate the impact of any escaped or unsanitized input.\n\n## Source Code Fix Recommendation\n\nThe specific fix would depend on the context of the code, but in general, you should always sanitize user input before using it. For example, if you're using jQuery, you can use the `text()` function to safely escape HTML content:\n\n```javascript\nlet userInput = \"<script>malicious code here</script>\";\n$(\"#someElement\").text(userInput); // Safely escapes HTML\n```\n\n## Library Dependencies\n\nThe provided code snippet seems to be using jQuery version 1.4.1.\n\n## References\n\n- [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)\n- [OWASP DOM based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html)\n- [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)"
+                "markdown": "## Description\n\nIn JavaScript, an empty catch block is a code block that catches an exception but does not contain any code to handle the exception. This is a vulnerability because it can lead to silent failures where errors occur but are not reported or logged, making debugging difficult. Additionally, it can also pose a security risk as it can hide potential security issues that are causing exceptions.\n\nIn the provided code snippet, the catch block is empty, which means that if an exception is thrown in the try block, it will be caught but not handled or logged.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to at least log the exception in the catch block. This can be done using `console.error()` for debugging purposes. For production code, it is recommended to use a more sophisticated logging solution that can log errors to a file or a logging service.\n\nIn addition, it is also recommended to handle the exception appropriately depending on the nature of the exception. This can involve retrying the operation, showing an error message to the user, or failing gracefully.\n\n## Source Code Fix Recommendation\n\nThe catch block can be modified to log the error as follows:\n\n```javascript\nc.ready);var a=false;try{a=z.frameElement==null}catch(b){console.error(b);}r.documentElement.doScroll&&a&&la()}}},isFunction:function(a){return $.call(a)===\"[object Function]\"},isArray:function(a){return $.call(a)===\"[object Array]\"},isPlainObject:function(a){if(!a||$.call(a)!==\"[object Object]\"||a.nodeType||a.setInterval)return false;if(a.constructor&&!aa.call(a,\"constructor\")&&!aa.call(a.constructor.prototype,\"isPrototypeOf\"))return false;var b;for(b in a);return b===v||aa.call(a,b)},isEmptyObject:function(a){for(var b in a)return false;\n```\n\n## Library Dependencies\n\nThe provided code snippet appears to be a part of a larger code base, possibly jQuery or a similar library. However, without the full context, it's hard to determine the exact dependencies.\n\n## References\n\n- [OWASP Top 10 - A6:2017-Security Misconfiguration](https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration)\n- [CWE-390: Detection of Error Condition Without Action](https://cwe.mitre.org/data/definitions/390.html)"
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-390",
+                    "url": "https://cwe.mitre.org/data/definitions/390.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-390"
+                ]
+              }
+            },
+            {
+              "id": "df7aca11-8d8a-3dff-9627-4093cbd876a5",
+              "name": "Potential ReDoS vulnerability due to RegExp() being called with a `a` function argument; recommended to use hardcoded regexes, input validation, or a regex checking/sanitization library like 'recheck'.",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe code snippet provided is vulnerable to a Regular Expression Denial of Service (ReDoS) attack. This vulnerability occurs when the code uses the `RegExp()` function with a user-controlled input, which in this case is `a[0]`. An attacker can provide a specially crafted input that can cause the regular expression to take a very long time to evaluate, effectively causing a denial of service.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should avoid using user-controlled input directly in the `RegExp()` function. Instead, you should use hardcoded regular expressions, validate the input before using it in a regular expression, or use a library like 'recheck' that can check and sanitize regular expressions.\n\n## Source Code Fix Recommendation\n\nHere is a simple fix for the vulnerability:\n\n```javascript\nlet input = a[0];\n// Validate the input before using it in a regular expression\nif (/^[a-zA-Z0-9]+$/.test(input)) {\n    let d = new RegExp(\"(^|\\\\.)\" + input + \"(\\\\.|$)\");\n    c.each(c.data(this, \"events\").live || {}, function () {\n        d.test(this.type) && b++;\n    });\n    b < 1 && c.event.remove(this, input, na)\n}\n```\n\nIn this fix, the input is validated to ensure it only contains alphanumeric characters before it is used in a regular expression. This prevents an attacker from providing a specially crafted input that could cause a ReDoS attack.\n\n## Library Dependencies\n\nThe code snippet provided appears to use the jQuery library, as indicated by the use of the `c.each()` and `c.data()` functions.\n\n## References\n\n- [OWASP ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)\n\nPlease note that the links provided are accessible to anonymous users at the time of writing this report."
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-400",
+                    "url": "https://cwe.mitre.org/data/definitions/400.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-400"
+                ]
+              }
+            },
+            {
+              "id": "2e5934e4-e38d-3713-a683-e89c08c290d5",
+              "name": "\"Potential XSS Vulnerability from User-Controlled Data in HTML String\"",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nCross-Site Scripting (XSS) vulnerabilities occur when data enters a program from an untrusted source and is used to generate dynamic HTML content. The vulnerability here is a potential XSS vulnerability from user-controlled data in an HTML string in JavaScript. This can occur when user input is incorrectly sanitized or encoded, allowing an attacker to inject malicious scripts into web pages viewed by other users. These scripts can steal sensitive information, perform actions on behalf of the user, or exploit other vulnerabilities in the user's browser.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to:\n\n1. **Validate Input:** Ensure that all user-supplied input is validated before it is processed. This can help to prevent malicious data from being injected into the application.\n\n2. **Encode Output:** Encode all user-supplied data before it is output in HTML. This can prevent potentially malicious code from being executed in the user's browser.\n\n3. **Use Appropriate Response Headers:** Use HTTP headers to restrict how user-supplied data can be used in the browser. For example, the Content-Security-Policy header can be used to prevent inline JavaScript from being executed.\n\n4. **Use Up-to-Date Libraries:** Ensure that all libraries used by the application are up-to-date and free from known vulnerabilities.\n\n## Source Code Fix Recommendation\n\nThe specific vulnerability sink in the provided code is the use of the `new Function(\"return \"+a))()` construct, which can execute arbitrary JavaScript code. This can be fixed by replacing it with a safe JSON parsing function, such as `JSON.parse(a)`.\n\n```javascript\nreturn z.JSON&&z.JSON.parse?z.JSON.parse(a):c.error(\"Invalid JSON: \"+a)\n```\n\n## Library Dependencies\n\nThe code example appears to be using the jQuery library.\n\n## References\n\n- [OWASP XSS (Cross Site Scripting) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)\n- [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)"
               },
               "properties": {
                 "cwe": [
@@ -316,90 +338,24 @@
               }
             },
             {
-              "id": "2e5934e4-e38d-3713-a683-e89c08c290d5",
-              "name": "\"Potential XSS Vulnerability from User-Controlled Data in HTML String\"",
-              "helpUri": "https://www.glog.ai/",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nCross-Site Scripting (XSS) vulnerabilities occur when data enters a program from an untrusted source and is used to generate dynamic HTML content. The vulnerability here is a potential XSS vulnerability from user-controlled data in an HTML string in JavaScript. This can occur when user input is incorrectly sanitized or encoded, allowing an attacker to inject malicious scripts into web pages viewed by other users. These scripts can steal sensitive information, perform actions on behalf of the user, or exploit other vulnerabilities in the user's browser.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to:\n\n1. **Validate Input:** Ensure that all user-supplied input is validated before it is processed. This can help to prevent malicious data from being injected into the application.\n\n2. **Encode Output:** Encode all user-supplied data before it is output in HTML. This can prevent potentially malicious code from being executed in the user's browser.\n\n3. **Use Appropriate Response Headers:** Use HTTP headers to restrict how user-supplied data can be used in the browser. For example, the Content-Security-Policy header can be used to prevent inline JavaScript from being executed.\n\n4. **Use Up-to-Date Libraries:** Ensure that all libraries used by the application are up-to-date and free from known vulnerabilities.\n\n## Source Code Fix Recommendation\n\nThe specific vulnerability sink in the provided code is the use of the `new Function(\"return \"+a))()` construct, which can execute arbitrary JavaScript code. This can be fixed by replacing it with a safe JSON parsing function, such as `JSON.parse(a)`.\n\n```javascript\nreturn z.JSON&&z.JSON.parse?z.JSON.parse(a):c.error(\"Invalid JSON: \"+a)\n```\n\n## Library Dependencies\n\nThe code example appears to be using the jQuery library.\n\n## References\n\n- [OWASP XSS (Cross Site Scripting) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)\n- [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)"
-              },
-              "properties": {
-                "cwe": [
-                  {
-                    "id": "CWE-79",
-                    "url": "https://cwe.mitre.org/data/definitions/79.html"
-                  }
-                ],
-                "severity": "MEDIUM",
-                "kind": "FAIL",
-                "tags": [
-                  "CWE-79"
-                ]
-              }
-            },
-            {
               "id": "1921fd27-9582-34b1-a89f-13f052ce565d",
               "name": "Prototype Pollution Vulnerability Detected",
               "helpUri": "https://www.glog.ai/",
               "help": {
                 "text": "",
-                "markdown": "## Description\n\nPrototype Pollution is a vulnerability that occurs when the properties of JavaScript's `Object.prototype` are modified. The properties of `Object.prototype` are accessible to all objects. Therefore, the modification of this object can influence the behaviour of all objects. This vulnerability can lead to several issues like denial of service (DoS), Remote Code Execution, and even property injection.\n\nIn the provided code, the vulnerability is not directly visible. However, if the function parameters `a`, `b`, `d`, `f` are controlled by the user or can be manipulated, it could lead to Prototype Pollution.\n\n## Mitigation Advice\n\nTo mitigate Prototype Pollution vulnerabilities, follow these general guidelines:\n\n- Avoid using user input to directly access object properties.\n- Use `Object.create(null)` to create objects without a prototype, which are not susceptible to Prototype Pollution.\n- Use `Map` instead of `Object` to store key-value pairs.\n- Use libraries that are designed to protect against Prototype Pollution, such as lodash's `_.set` and `_.get` functions.\n\n## Source Code Fix Recommendation\n\nWithout the full context of the code, it's hard to provide a specific fix. However, a general recommendation would be to validate and sanitize all user inputs and to avoid using user input to directly access object properties.\n\n## Library Dependencies\n\nThe code seems to be using jQuery, but without the full context, it's hard to determine all the library dependencies.\n\n## References\n\n- [CWE-250: Execution with Unnecessary Privileges](https://cwe.mitre.org/data/definitions/250.html)\n\nPlease note that the links were active and accessible at the time of writing this report."
+                "markdown": "## Description\n\nPrototype Pollution is a vulnerability that occurs when the properties of JavaScript's `Object.prototype` are modified. The properties of `Object.prototype` are accessible to all objects. Thus, the modification of this object can lead to an application-wide vulnerability. If untrusted input is used to modify an object's prototype, it could lead to a denial of service (DoS) by triggering JavaScript exceptions, or it could lead to remote code execution (RCE).\n\nIn the provided code, the vulnerability is not directly visible. However, if any of the function parameters (`a`, `b`, `d`, `f`, etc.) are influenced by user input or can be manipulated by an attacker, there might be a risk of Prototype Pollution.\n\n## Mitigation Advice\n\nTo mitigate Prototype Pollution vulnerabilities, follow these general guidelines:\n\n- Avoid using user input to directly access object properties with the bracket notation.\n- Use `Object.create(null)` to create objects that do not inherit `Object.prototype`.\n- Use libraries that offer protection against Prototype Pollution.\n- Always validate and sanitize user input.\n\n## Source Code Fix Recommendation\n\nWithout the full context of the code, it's hard to provide a specific fix. However, if any of the function parameters are influenced by user input, they should be properly validated and sanitized. For example, if `a` is user input, it should be checked:\n\n```javascript\nif (typeof a !== 'string' || !/^[\\w\\s]+$/.test(a)) {\n  throw new Error('Invalid input');\n}\n```\n\nThis will throw an error if `a` is not a string or contains characters other than alphanumeric characters and spaces.\n\n## Library Dependencies\n\nThe code seems to be using jQuery, but without the full context, it's hard to determine if there are other library dependencies.\n\n## References\n\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)\n\nPlease note that the links were active and accessible at the time of writing this report."
               },
               "properties": {
                 "cwe": [
                   {
-                    "id": "CWE-250",
-                    "url": "https://cwe.mitre.org/data/definitions/250.html"
+                    "id": "CWE-400",
+                    "url": "https://cwe.mitre.org/data/definitions/400.html"
                   }
                 ],
                 "severity": "MEDIUM",
                 "kind": "FAIL",
                 "tags": [
-                  "CWE-250"
-                ]
-              }
-            },
-            {
-              "id": "51fc1d05-eb34-3e66-9877-45242c92ed2a",
-              "name": "\"XSS Vulnerabilities from User-Controlled Data in Methods like `innerHTML`, `outerHTML`, or `document.write`\"",
-              "helpUri": "https://www.glog.ai/",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nCross-Site Scripting (XSS) vulnerabilities occur when an application includes untrusted data in a new web page without proper validation or escaping, or updates an existing web page with user-supplied data using a browser API that can create HTML or JavaScript. XSS allows attackers to execute scripts in the victim's browser which can hijack user sessions, deface web sites, or redirect the user to malicious sites.\n\nIn JavaScript, methods like `innerHTML`, `outerHTML`, or `document.write` can introduce XSS vulnerabilities if they are used to insert user-controlled data into the DOM. The provided code snippet is vulnerable to XSS because it uses the `innerHTML` method to insert user-controlled data (`a`) into the DOM without proper sanitization or escaping.\n\n## Mitigation Advice\n\nTo mitigate XSS vulnerabilities, you should:\n\n- Use context-specific output encoding/escaping before inserting user-controlled data into HTML or JavaScript. For example, use HTML entity encoding for data that is inserted into HTML element content or attribute values.\n- Use secure browser APIs that automatically enforce output encoding, such as `element.textContent` (instead of `element.innerHTML`) or `element.setAttribute`.\n- Validate user input on the server-side and client-side to ensure it conforms to expected formats.\n- Use HTTP-only cookies to protect sensitive data such as session IDs from being accessed by client-side scripts.\n\n## Source Code Fix Recommendation\n\nReplace the use of `innerHTML` with `textContent` to prevent the browser from interpreting the user-controlled data as HTML:\n\n```javascript\ntry {\n    for(var b=0,d=this.length;b<d;b++) {\n        if(this[b].nodeType===1) {\n            c.cleanData(this[b].getElementsByTagName(\"*\"));\n            this[b].textContent=a;\n        }\n    }\n} catch(f) {\n    this.empty().append(a);\n}\n```\n\n## Library Dependencies\n\nThe provided code snippet appears to use the jQuery library, as indicated by the use of the `$` symbol and jQuery methods such as `cleanData`, `empty`, and `append`.\n\n## References\n\n- [OWASP: Cross-Site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/)\n- [OWASP: DOM Based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html)\n- [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)"
-              },
-              "properties": {
-                "cwe": [
-                  {
-                    "id": "CWE-79",
-                    "url": "https://cwe.mitre.org/data/definitions/79.html"
-                  }
-                ],
-                "severity": "MEDIUM",
-                "kind": "FAIL",
-                "tags": [
-                  "CWE-79"
-                ]
-              }
-            },
-            {
-              "id": "5930bcb6-4cb4-31c2-9afd-eba0a1bd4348",
-              "name": "\"XSS Vulnerabilities from User-Controlled Data in Methods like `innerHTML`, `outerHTML`, or `document.write`\"",
-              "helpUri": "https://www.glog.ai/",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nCross-Site Scripting (XSS) vulnerabilities occur when an application includes untrusted data in a new web page without proper validation or escaping, or updates an existing web page with user-supplied data using a browser API that can create HTML or JavaScript. XSS allows attackers to execute scripts in the victim's browser which can hijack user sessions, deface web sites, or redirect the user to malicious sites.\n\nIn this specific case, the vulnerability arises from the use of methods like `innerHTML`, `outerHTML`, or `document.write` that are controlled by user data. These methods are used to write data into the HTML document. If the data is controlled by the user and is not properly sanitized, it can lead to XSS attacks.\n\n## Mitigation Advice\n\nTo mitigate XSS vulnerabilities, you should:\n\n- Use the principle of least privilege. Only necessary privileges should be granted, and they should be granted for the least amount of time necessary.\n- Validate input. Input should be validated as strictly as possible on arrival, given the kind of content that it is expected to contain.\n- Encode data. This can help to prevent XSS attacks by ensuring that the data is safe to display to users.\n- Use appropriate response headers. For example, you can use the `Content-Type` and `X-Content-Type-Options` headers to ensure that the browsers interpret the content in the way intended by the server.\n- Content Security Policy (CSP). This is a declarative policy that lets the authors (or server administrators) of a web application inform the client about the sources from which the application expects to load resources.\n\n## Source Code Fix Recommendation\n\nThe code provided is not complete and does not show where the vulnerability is. However, if the user-controlled data is being used in `innerHTML`, `outerHTML`, or `document.write`, it should be properly sanitized before use. Here is a general example:\n\n```javascript\n// BAD\nelement.innerHTML = userControlledData;\n\n// GOOD\nelement.textContent = userControlledData;\n```\n\nIn the good example, `textContent` is used instead of `innerHTML`. This ensures that the user-controlled data is treated as text and not as HTML code.\n\n## Library Dependencies\n\nThe code provided does not clearly indicate any specific library dependencies.\n\n## References\n\n- [OWASP XSS (Cross Site Scripting) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)\n- [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)"
-              },
-              "properties": {
-                "cwe": [
-                  {
-                    "id": "CWE-79",
-                    "url": "https://cwe.mitre.org/data/definitions/79.html"
-                  }
-                ],
-                "severity": "MEDIUM",
-                "kind": "FAIL",
-                "tags": [
-                  "CWE-79"
+                  "CWE-400"
                 ]
               }
             },
@@ -410,6 +366,28 @@
               "help": {
                 "text": "",
                 "markdown": "## Description\n\nThe vulnerability in question is an Arbitrary Code Execution vulnerability. This type of vulnerability occurs when an application does not properly validate input before executing it as code. In the provided JavaScript code, the `parseJSON` function is vulnerable because it uses the `new Function` constructor to parse JSON input. This allows an attacker to inject arbitrary code into the JSON input, which will then be executed by the application.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should avoid using the `new Function` constructor to parse JSON. Instead, use the built-in `JSON.parse` method, which does not execute the input as code. \n\n## Source Code Fix Recommendation\n\nHere is a recommended fix for the provided code:\n\n```javascript\nparseJSON:function(a){\n  if(typeof a!==\"string\"||!a) return null;\n  if(/^[\\],:{}\\s]*$/.test(a.replace(/\\\\(?:[\"\\\\\\/bfnrt]|u[0-9a-fA-F]{4})/g,\"@\").replace(/\"[^\"\\\\\\n\\r]*\"|true|false|null|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?/g,\"]\").replace(/(?:^|:|,)(?:\\s*\\[)+/g,\"\")))\n    return z.JSON&&z.JSON.parse?z.JSON.parse(a):null;\n  else \n    c.error(\"Invalid JSON: \"+a)\n},\n```\n\nIn this fix, if `z.JSON.parse` is not available, the function will return `null` instead of trying to parse the JSON with `new Function`.\n\n## Library Dependencies\n\nThe provided code does not appear to have any explicit library dependencies.\n\n## OWASP and CWE Links\n\n- [OWASP Top 10 2017: Injection](https://owasp.org/www-project-top-ten/2017/A1_2017-Injection)\n- [CWE-94: Improper Control of Generation of Code ('Code Injection')](https://cwe.mitre.org/data/definitions/94.html)"
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-94",
+                    "url": "https://cwe.mitre.org/data/definitions/94.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-94"
+                ]
+              }
+            },
+            {
+              "id": "2a1c8902-3442-3ffc-af15-cb38e409f048",
+              "name": "\"Vulnerability in Dynamic Execution with Eval and Function\"",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in dynamic execution with `eval` and `Function` in JavaScript arises when user input is directly passed into these functions. This can lead to arbitrary code execution, as `eval` and `Function` will execute any valid JavaScript code. This is a serious security risk, as it can lead to remote code execution (RCE), cross-site scripting (XSS), and other types of attacks.\n\nIn the provided code, the `parseJSON` function uses a regular expression to validate the input string and then passes it to `new Function(\"return \"+a)()`. This is potentially unsafe, as the regular expression may not catch all malicious inputs, and any that it misses will be executed as code.\n\n## Mitigation Advice\n\nAvoid using `eval` and `Function` with user inputs. If you need to parse JSON, use `JSON.parse` instead, which is much safer. If you absolutely must use `eval` or `Function`, make sure to sanitize and validate the inputs thoroughly.\n\n## Source Code Fix Recommendation\n\nReplace the unsafe `new Function(\"return \"+a)()` with `JSON.parse(a)`. Here's the fixed code:\n\n```javascript\nreturn true},error:function(a){throw a;},parseJSON:function(a){if(typeof a!==\"string\"||!a)return null;if(/^[\\],:{}\\s]*$/.test(a.replace(/\\\\(?:[\"\\\\\\/bfnrt]|u[0-9a-fA-F]{4})/g,\"@\").replace(/\"[^\"\\\\\\n\\r]*\"|true|false|null|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?/g,\"]\").replace(/(?:^|:|,)(?:\\s*\\[)+/g,\"\")))return z.JSON&&z.JSON.parse?z.JSON.parse(a):JSON.parse(a);else c.error(\"Invalid JSON: \"+a)},noop:function(){},globalEval:function(a){if(a&&Ra.test(a)){var b=r.getElementsByTagName(\"head\")[0]||\n```\n\n## Library Dependencies\n\nThe provided code seems to be a part of jQuery library, so jQuery is required for this code to execute properly.\n\n## References\n\n- [CWE-94: Improper Control of Generation of Code ('Code Injection')](https://cwe.mitre.org/data/definitions/94.html)"
               },
               "properties": {
                 "cwe": [
@@ -448,28 +426,6 @@
               }
             },
             {
-              "id": "bb55c610-08a8-32b1-8586-d2f6e60e15aa",
-              "name": "\"Logging Errors for Debugging and Security Monitoring in Empty Catch Block\"",
-              "helpUri": "https://www.glog.ai/",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nIn JavaScript, an empty catch block vulnerability occurs when an exception is caught, but nothing is done to handle it. This can lead to unexpected behavior, as the error is effectively swallowed, making it difficult to debug. Additionally, it can pose a security risk as it may allow the program to continue running in an erroneous state, which could be exploited by an attacker.\n\nIn the provided code snippet, the catch block is empty, which means that if an error occurs when trying to append a text node to `b`, it will be silently ignored.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to at least log the error in the catch block. This can be done using `console.error()`, which will print the error message to the console. This allows developers to see when and where an error occurred, making it easier to debug.\n\nAdditionally, consider rethrowing the error after logging it, or handling it in some other appropriate way. Simply logging the error and then continuing as if nothing happened can still lead to unexpected behavior.\n\n## Source Code Fix Recommendation\n\nHere is a recommended fix for the provided code snippet:\n\n```javascript\nb.type=\"text/javascript\";\ntry {\n    b.appendChild(r.createTextNode(\"window.\"+f+\"=1;\"))\n} catch(j) {\n    console.error(j);\n    throw j;\n}\na.insertBefore(b,a.firstChild);\nif(z[f]){\n    c.support.scriptEval=true;\n    delete z[f]\n}\na.removeChild(b);\nif(d.attachEvent&&d.fireEvent){\n    d.attachEvent(\"onclick\",function n(){\n        c.support.noCloneEvent=false;\n        d.detachEvent(\"onclick\",n)\n    });\n    d.cloneNode(true).fireEvent(\"onclick\")\n}\nd=r.createElement(\"div\");\nd.innerHTML=\"<input type='radio' name='radiotest' checked='checked'/>\";\na=r.createDocumentFragment();\na.appendChild(d.firstChild);\n```\n\n## Library Dependencies\n\nThe provided code snippet does not appear to have any explicit library dependencies.\n\n## References\n\n- [OWASP Top 10 - A6:2017-Security Misconfiguration](https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration)\n- [CWE-390: Detection of Error Condition Without Action](https://cwe.mitre.org/data/definitions/390.html)"
-              },
-              "properties": {
-                "cwe": [
-                  {
-                    "id": "CWE-390",
-                    "url": "https://cwe.mitre.org/data/definitions/390.html"
-                  }
-                ],
-                "severity": "MEDIUM",
-                "kind": "FAIL",
-                "tags": [
-                  "CWE-390"
-                ]
-              }
-            },
-            {
               "id": "74175d46-a497-30b8-9448-c4bfa8fc4ae5",
               "name": "XSS Vulnerability due to Dynamic Input in innerHTML",
               "helpUri": "https://www.glog.ai/",
@@ -488,28 +444,6 @@
                 "kind": "FAIL",
                 "tags": [
                   "CWE-79"
-                ]
-              }
-            },
-            {
-              "id": "cbfd11ae-8fc5-3f42-83fb-b1e0c6beb544",
-              "name": "Secure Regex Against User Input to Prevent ReDoS Vulnerability",
-              "helpUri": "https://www.glog.ai/",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nThe ReDoS (Regular Expression Denial of Service) vulnerability is a type of Denial of Service attack. It is caused by a regular expression (regex) that takes a very long time to evaluate, potentially causing the application to become unresponsive. This can happen when user input is used in a regular expression without proper sanitization. The attacker can provide a specially crafted input that causes the regex to take a long time to evaluate, effectively blocking other operations.\n\n## Mitigation Advice\n\nTo prevent ReDoS attacks, you should avoid using user input directly in regular expressions. If it is necessary to use user input in a regex, make sure to sanitize and validate the input thoroughly. Avoid using complex regular expressions with nested quantifiers, as they can exponentially increase the time it takes to evaluate the regex.\n\n## Source Code Fix Recommendation\n\nThe provided code snippet does not seem to contain a regular expression, so it's hard to provide a specific fix. However, here is a general example of how to sanitize user input before using it in a regex:\n\n```javascript\nlet userInput = /* get user input */;\nlet sanitizedInput = userInput.replace(/[^a-zA-Z0-9]/g, ''); // remove non-alphanumeric characters\nlet regex = new RegExp(sanitizedInput);\n```\n\n## Library Dependencies\n\nThe provided code snippet seems to use jQuery, but it's hard to tell without more context. Make sure to include the jQuery library for the code to work properly.\n\n## OWASP and CWE Resources\n\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)\n\nPlease note that the links were active and accessible at the time of writing this report."
-              },
-              "properties": {
-                "cwe": [
-                  {
-                    "id": "CWE-400",
-                    "url": "https://cwe.mitre.org/data/definitions/400.html"
-                  }
-                ],
-                "severity": "MEDIUM",
-                "kind": "FAIL",
-                "tags": [
-                  "CWE-400"
                 ]
               }
             },
@@ -558,6 +492,28 @@
               }
             },
             {
+              "id": "cbfd11ae-8fc5-3f42-83fb-b1e0c6beb544",
+              "name": "Secure Regex Against User Input to Prevent ReDoS Vulnerability",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe ReDoS (Regular Expression Denial of Service) vulnerability is a type of Denial of Service attack. It is caused by a regular expression (regex) that takes a very long time to evaluate, potentially causing the application to become unresponsive. This can happen when user input is used in a regular expression without proper sanitization. The attacker can provide a specially crafted input that causes the regex to take a long time to evaluate, effectively blocking other operations.\n\n## Mitigation Advice\n\nTo prevent ReDoS attacks, you should avoid using user input directly in regular expressions. If it is necessary to use user input in a regex, make sure to sanitize and validate the input thoroughly. Avoid using complex regular expressions with nested quantifiers, as they can exponentially increase the time it takes to evaluate the regex.\n\n## Source Code Fix Recommendation\n\nThe provided code snippet does not seem to contain a regular expression, so it's hard to provide a specific fix. However, here is a general example of how to sanitize user input before using it in a regex:\n\n```javascript\nlet userInput = /* get user input */;\nlet sanitizedInput = userInput.replace(/[^a-zA-Z0-9]/g, ''); // remove non-alphanumeric characters\nlet regex = new RegExp(sanitizedInput);\n```\n\n## Library Dependencies\n\nThe provided code snippet seems to use jQuery, but it's hard to tell without more context. Make sure to include the jQuery library for the code to work properly.\n\n## OWASP and CWE Resources\n\n- [CWE-400: Uncontrolled Resource Consumption](https://cwe.mitre.org/data/definitions/400.html)\n\nPlease note that the links were active and accessible at the time of writing this report."
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-400",
+                    "url": "https://cwe.mitre.org/data/definitions/400.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-400"
+                ]
+              }
+            },
+            {
               "id": "8ea02b08-27bb-37e3-8c54-18b6d7950021",
               "name": "HTML String XSS Vulnerability due to User-Controlled Data",
               "helpUri": "https://www.glog.ai/",
@@ -602,7 +558,7 @@
               }
             },
             {
-              "id": "73d9463d-9560-3b47-8b0e-e7a4b7112601",
+              "id": "0ca195e5-87c0-3b78-a088-2ba3ac11be99",
               "name": "\"Logging Errors for Debugging and Security Monitoring in Empty Catch Block\"",
               "helpUri": "https://www.glog.ai/",
               "help": {
@@ -690,6 +646,28 @@
               }
             },
             {
+              "id": "11a48ed7-985b-3af1-b550-aa3596449cb5",
+              "name": "\"Logging Errors for Debugging and Security Monitoring in Empty Catch Block\"",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nIn JavaScript, an empty catch block vulnerability occurs when an exception is caught but not properly handled. This can lead to unexpected behavior, making the application prone to bugs or even security vulnerabilities. In the provided code, the catch block is empty, which means that any exceptions that occur during the execution of the try block are silently ignored. This can make debugging difficult, as no error messages or logs are produced. Additionally, it can also pose a security risk, as malicious users may exploit these unhandled exceptions to cause harm.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to at least log the exception in the catch block. This can help in debugging by providing information about what went wrong. However, simply logging the exception is not enough for security purposes. Depending on the nature of the exception, additional actions may be needed, such as cleaning up resources, notifying the user, or even terminating the application.\n\n## Source Code Fix Recommendation\n\nHere is a simple fix for the provided code:\n\n```javascript\nz.attachEvent&&!z.addEventListener&&z.attachEvent(\"onunload\",function(){\n    for(var a in c.cache)\n        if(c.cache[a].handle)\n            try{\n                c.event.remove(c.cache[a].handle.elem)\n            }catch(b){\n                console.error(b); // Log the error\n            }\n});\n```\n\nIn this fix, the error is logged to the console. Depending on the application, you might want to use a more sophisticated logging mechanism or take additional actions.\n\n## Library Dependencies\n\nThe provided code seems to depend on jQuery, as it uses the `$` (or `c` in this case) function and methods like `unbind`, `each`, `bind`, `trigger`, and `attachEvent`.\n\n## References\n\n- [OWASP Top 10 - A6:2017-Security Misconfiguration](https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration)\n- [CWE-390: Detection of Error Condition Without Action](https://cwe.mitre.org/data/definitions/390.html)"
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-390",
+                    "url": "https://cwe.mitre.org/data/definitions/390.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-390"
+                ]
+              }
+            },
+            {
               "id": "11acccb0-da8c-34e8-979c-8ce86e216b6b",
               "name": "\"Non-Standard and Improperly Named Objects Vulnerability\"",
               "helpUri": "https://www.glog.ai/",
@@ -710,6 +688,50 @@
                   "CWE-247"
                 ]
               }
+            },
+            {
+              "id": "5930bcb6-4cb4-31c2-9afd-eba0a1bd4348",
+              "name": "\"XSS Vulnerabilities from User-Controlled Data in Methods like `innerHTML`, `outerHTML`, or `document.write`\"",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nCross-Site Scripting (XSS) vulnerabilities occur when an application includes untrusted data in a new web page without proper validation or escaping, or updates an existing web page with user-supplied data using a browser API that can create HTML or JavaScript. XSS allows attackers to execute scripts in the victim's browser which can hijack user sessions, deface web sites, or redirect the user to malicious sites.\n\nIn this specific case, the vulnerability arises from the use of methods like `innerHTML`, `outerHTML`, or `document.write` that are controlled by user data. These methods are used to write data into the HTML document. If the data is controlled by the user and is not properly sanitized, it can lead to XSS attacks.\n\n## Mitigation Advice\n\nTo mitigate XSS vulnerabilities, you should:\n\n- Use the principle of least privilege. Only necessary privileges should be granted, and they should be granted for the least amount of time necessary.\n- Validate input. Input should be validated as strictly as possible on arrival, given the kind of content that it is expected to contain.\n- Encode data. This can help to prevent XSS attacks by ensuring that the data is safe to display to users.\n- Use appropriate response headers. For example, you can use the `Content-Type` and `X-Content-Type-Options` headers to ensure that the browsers interpret the content in the way intended by the server.\n- Content Security Policy (CSP). This is a declarative policy that lets the authors (or server administrators) of a web application inform the client about the sources from which the application expects to load resources.\n\n## Source Code Fix Recommendation\n\nThe code provided is not complete and does not show where the vulnerability is. However, if the user-controlled data is being used in `innerHTML`, `outerHTML`, or `document.write`, it should be properly sanitized before use. Here is a general example:\n\n```javascript\n// BAD\nelement.innerHTML = userControlledData;\n\n// GOOD\nelement.textContent = userControlledData;\n```\n\nIn the good example, `textContent` is used instead of `innerHTML`. This ensures that the user-controlled data is treated as text and not as HTML code.\n\n## Library Dependencies\n\nThe code provided does not clearly indicate any specific library dependencies.\n\n## References\n\n- [OWASP XSS (Cross Site Scripting) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)\n- [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)"
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-79",
+                    "url": "https://cwe.mitre.org/data/definitions/79.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-79"
+                ]
+              }
+            },
+            {
+              "id": "51fc1d05-eb34-3e66-9877-45242c92ed2a",
+              "name": "\"XSS Vulnerabilities from User-Controlled Data in Methods like `innerHTML`, `outerHTML`, or `document.write`\"",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nCross-Site Scripting (XSS) vulnerabilities occur when an application includes untrusted data in a new web page without proper validation or escaping, or updates an existing web page with user-supplied data using a browser API that can create HTML or JavaScript. XSS allows attackers to execute scripts in the victim's browser which can hijack user sessions, deface web sites, or redirect the user to malicious sites.\n\nIn JavaScript, methods like `innerHTML`, `outerHTML`, or `document.write` can introduce XSS vulnerabilities if they are used to insert user-controlled data into the DOM. The provided code snippet is vulnerable to XSS because it uses the `innerHTML` method to insert user-controlled data (`a`) into the DOM without proper sanitization or escaping.\n\n## Mitigation Advice\n\nTo mitigate XSS vulnerabilities, you should:\n\n- Use context-specific output encoding/escaping before inserting user-controlled data into HTML or JavaScript. For example, use HTML entity encoding for data that is inserted into HTML element content or attribute values.\n- Use secure browser APIs that automatically enforce output encoding, such as `element.textContent` (instead of `element.innerHTML`) or `element.setAttribute`.\n- Validate user input on the server-side and client-side to ensure it conforms to expected formats.\n- Use HTTP-only cookies to protect sensitive data such as session IDs from being accessed by client-side scripts.\n\n## Source Code Fix Recommendation\n\nReplace the use of `innerHTML` with `textContent` to prevent the browser from interpreting the user-controlled data as HTML:\n\n```javascript\ntry {\n    for(var b=0,d=this.length;b<d;b++) {\n        if(this[b].nodeType===1) {\n            c.cleanData(this[b].getElementsByTagName(\"*\"));\n            this[b].textContent=a;\n        }\n    }\n} catch(f) {\n    this.empty().append(a);\n}\n```\n\n## Library Dependencies\n\nThe provided code snippet appears to use the jQuery library, as indicated by the use of the `$` symbol and jQuery methods such as `cleanData`, `empty`, and `append`.\n\n## References\n\n- [OWASP: Cross-Site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/)\n- [OWASP: DOM Based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html)\n- [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)"
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-79",
+                    "url": "https://cwe.mitre.org/data/definitions/79.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-79"
+                ]
+              }
             }
           ],
           "language": "en-US",
@@ -727,7 +749,7 @@
           "kind": "fail",
           "level": "warning",
           "message": {
-            "text": "There's an HTTP request made with requests,\nbut the raise_for_status() utility method isn't used.\nThis can result in request errors going unnoticed\nand your code behaving in unexpected ways,\nsuch as if your authorization API returns a 500 error\nwhile you're only checking for a 401."
+            "text": "By default, 'requests' calls wait until the connection is closed.\nThis means a 'requests' call without a timeout will hang the program\nif a response is never received. Consider setting a timeout for all\n'requests'.\n"
           },
           "locations": [
             {
@@ -749,38 +771,7 @@
             }
           ],
           "fingerprints": {
-            "matchBasedId/v1": "6f2bcc352720207838f6c629764ea03e7e60a26c40762af5eabf6671fba41f404e1cd2aa9cbe81bd89179fe0c261be676e5a5a878c4c0e588e971d916dc3bcf2_0"
-          },
-          "properties": {}
-        },
-        {
-          "ruleId": "8641123f-30f6-3428-9d99-5409b8394ace",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "Regex `r'OUT([a-zA-Z0-9].+?)OUT'` may be vulnerable to catastrophic backtracking, which may lead to denial of service attacks. (This rule only matches regex usage, not actual REDoS patterns. For full detection, use Semgrep Pro Engine.)"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "xxe_shell.py",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 36,
-                  "startColumn": 17,
-                  "endLine": 36,
-                  "endColumn": 72,
-                  "snippet": {
-                    "text": "                re.findall(r'OUT([a-zA-Z0-9].+?)OUT', str(req.content))[0]))"
-                  }
-                }
-              }
-            }
-          ],
-          "fingerprints": {
-            "matchBasedId/v1": "58343b68fa6688892258eab0dd18b4fb9c709bfd201e1e6a0a4522034eb0d56634b6e70e33af8203aae19f73ab4dc226d3600459714d98d03b4bba7fb68bf101_0"
+            "matchBasedId/v1": "164c25b447debfb6ecfd16f2feef944c39a7ea808935da954f5537d043c24da48c8ec7f5b8a623361c85fe834ff24edd1f125c64c23ff09f20a7f7bd8475c548_0"
           },
           "properties": {}
         },
@@ -812,6 +803,37 @@
           ],
           "fingerprints": {
             "matchBasedId/v1": "6f2bcc352720207838f6c629764ea03e7e60a26c40762af5eabf6671fba41f404e1cd2aa9cbe81bd89179fe0c261be676e5a5a878c4c0e588e971d916dc3bcf2_1"
+          },
+          "properties": {}
+        },
+        {
+          "ruleId": "8641123f-30f6-3428-9d99-5409b8394ace",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Regex `r'OUT([a-zA-Z0-9].+?)OUT'` may be vulnerable to catastrophic backtracking, which may lead to denial of service attacks. (This rule only matches regex usage, not actual REDoS patterns. For full detection, use Semgrep Pro Engine.)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "xxe_shell.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 17,
+                  "endLine": 36,
+                  "endColumn": 72,
+                  "snippet": {
+                    "text": "                re.findall(r'OUT([a-zA-Z0-9].+?)OUT', str(req.content))[0]))"
+                  }
+                }
+              }
+            }
+          ],
+          "fingerprints": {
+            "matchBasedId/v1": "58343b68fa6688892258eab0dd18b4fb9c709bfd201e1e6a0a4522034eb0d56634b6e70e33af8203aae19f73ab4dc226d3600459714d98d03b4bba7fb68bf101_0"
           },
           "properties": {}
         },
@@ -882,111 +904,6 @@
           "properties": {}
         },
         {
-          "ruleId": "bccfa26f-ed1e-3f32-bbf3-3ff6a4309fba",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "\"Potential XSS Vulnerability from User-Controlled Data in HTML String\""
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "penlab/js/jquery.min.js",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 18,
-                  "startColumn": 392,
-                  "endLine": 18,
-                  "endColumn": 457,
-                  "snippet": {
-                    "text": "a.currentTarget);m=0;for(s=i.length;m<s;m++)for(o in x){j=x[o];n=i[m].elem;f=null;if(i[m].selector===j.selector){if(j.live===\"mouseenter\"||j.live===\"mouseleave\")f=c(a.relatedTarget).closest(j.selector)[0];if(!f||f!==n)d.push({elem:n,fn:j})}}m=0;for(s=d.length;m<s;m++){i=d[m];a.currentTarget=i.elem;a.data=i.fn.data;if(i.fn.apply(i.elem,e)===false){b=false;break}}return b}}function oa(a,b){return\"live.\"+(a?a+\".\":\"\")+b.replace(/\\./g,\"`\").replace(/ /g,\"&\")}function pa(a){return!a||!a.parentNode||a.parentNode.nodeType==="
-                  }
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "f988c36ba42df66c94b17884a1f6734a3c8dfe246026c56d7a9c18f7c5a8f192",
-            "glog-pfp-ruleFileCode/v1": "651e7c8f8f7758d25a32fb1ef79367d32de1153568f04544ea16aaa56c8d96f2"
-          },
-          "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "651e7c8f8f7758d25a32fb1ef79367d32de1153568f04544ea16aaa56c8d96f2"
-          },
-          "properties": {}
-        },
-        {
-          "ruleId": "3e944970-a6ae-33dc-9ee9-3fc1ab04e87f",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "\"Prevent Regex Denial of Service Vulnerability in User Input Comparison\""
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "penlab/js/jquery.min.js",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 22,
-                  "startColumn": 217,
-                  "endLine": 22,
-                  "endColumn": 232,
-                  "snippet": {
-                    "text": "[f]);a=(a.cacheable?a.fragment.cloneNode(true):a.fragment).childNodes}}else{if(b=r.getElementById(d[2])){if(b.id!==d[2])return S.find(a);this.length=1;this[0]=b}this.context=r;this.selector=a;return this}else if(!b&&/^\\w+$/.test(a)){this.selector=a;this.context=r;a=r.getElementsByTagName(a)}else return!b||b.jquery?(b||S).find(a):c(b).find(a);else if(c.isFunction(a))return S.ready(a);if(a.selector!==v){this.selector=a.selector;this.context=a.context}return c.isArray(a)?this.setArray(a):c.makeArray(a,"
-                  }
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "df6bf22fb5439b74522411081a8ed4df2e058310f18b7abfc14272517814751a",
-            "glog-pfp-ruleFileCode/v1": "d4b61dc9ddbf6b03498bcdaee91e48f4e8b61b8f99a59a367dff9e181dc30317"
-          },
-          "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "d4b61dc9ddbf6b03498bcdaee91e48f4e8b61b8f99a59a367dff9e181dc30317"
-          },
-          "properties": {}
-        },
-        {
-          "ruleId": "df7aca11-8d8a-3dff-9627-4093cbd876a5",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "Potential ReDoS vulnerability due to RegExp() being called with a `a` function argument; recommended to use hardcoded regexes, input validation, or a regex checking/sanitization library like 'recheck'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "penlab/js/jquery.min.js",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 57,
-                  "startColumn": 5,
-                  "endLine": 57,
-                  "endColumn": 41,
-                  "snippet": {
-                    "text": "0,d=new RegExp(\"(^|\\\\.)\"+a[0]+\"(\\\\.|$)\");c.each(c.data(this,\"events\").live||{},function(){d.test(this.type)&&b++});b<1&&c.event.remove(this,a[0],na)}},special:{}},beforeunload:{setup:function(a,b,d){if(this.setInterval)this.onbeforeunload=d;return false},teardown:function(a,b){if(this.onbeforeunload===b)this.onbeforeunload=null}}}};c.Event=function(a){if(!this.preventDefault)return new c.Event(a);if(a&&a.type){this.originalEvent=a;this.type=a.type}else this.type=a;this.timeStamp=J();this[G]=true};"
-                  }
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "bc917a02ad44e5a2e2d0856d559d910a2e33fb6d6d0e53bc33520c1f9d4b2f0a",
-            "glog-pfp-ruleFileCode/v1": "dd9dd6932e094ec047373064d3e0e59b07e66785321e9edacf7b9b76607872c0"
-          },
-          "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "dd9dd6932e094ec047373064d3e0e59b07e66785321e9edacf7b9b76607872c0"
-          },
-          "properties": {}
-        },
-        {
           "ruleId": "76894ab3-40dd-3f07-a9ef-c3d6ef26e530",
           "kind": "fail",
           "level": "warning",
@@ -1018,6 +935,41 @@
           },
           "fingerprints": {
             "glog-fp-ruleFileCode/v1": "033bf09a480f17ee28245d9e1782221179c3a2d37061f1b901d8a18362f295b5"
+          },
+          "properties": {}
+        },
+        {
+          "ruleId": "bccfa26f-ed1e-3f32-bbf3-3ff6a4309fba",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "\"Potential XSS Vulnerability from User-Controlled Data in HTML String\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "penlab/js/jquery.min.js",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 392,
+                  "endLine": 18,
+                  "endColumn": 457,
+                  "snippet": {
+                    "text": "a.currentTarget);m=0;for(s=i.length;m<s;m++)for(o in x){j=x[o];n=i[m].elem;f=null;if(i[m].selector===j.selector){if(j.live===\"mouseenter\"||j.live===\"mouseleave\")f=c(a.relatedTarget).closest(j.selector)[0];if(!f||f!==n)d.push({elem:n,fn:j})}}m=0;for(s=d.length;m<s;m++){i=d[m];a.currentTarget=i.elem;a.data=i.fn.data;if(i.fn.apply(i.elem,e)===false){b=false;break}}return b}}function oa(a,b){return\"live.\"+(a?a+\".\":\"\")+b.replace(/\\./g,\"`\").replace(/ /g,\"&\")}function pa(a){return!a||!a.parentNode||a.parentNode.nodeType==="
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "f988c36ba42df66c94b17884a1f6734a3c8dfe246026c56d7a9c18f7c5a8f192",
+            "glog-pfp-ruleFileCode/v1": "651e7c8f8f7758d25a32fb1ef79367d32de1153568f04544ea16aaa56c8d96f2"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "651e7c8f8f7758d25a32fb1ef79367d32de1153568f04544ea16aaa56c8d96f2"
           },
           "properties": {}
         },
@@ -1057,6 +1009,41 @@
           "properties": {}
         },
         {
+          "ruleId": "3e944970-a6ae-33dc-9ee9-3fc1ab04e87f",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "\"Prevent Regex Denial of Service Vulnerability in User Input Comparison\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "penlab/js/jquery.min.js",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 217,
+                  "endLine": 22,
+                  "endColumn": 232,
+                  "snippet": {
+                    "text": "[f]);a=(a.cacheable?a.fragment.cloneNode(true):a.fragment).childNodes}}else{if(b=r.getElementById(d[2])){if(b.id!==d[2])return S.find(a);this.length=1;this[0]=b}this.context=r;this.selector=a;return this}else if(!b&&/^\\w+$/.test(a)){this.selector=a;this.context=r;a=r.getElementsByTagName(a)}else return!b||b.jquery?(b||S).find(a):c(b).find(a);else if(c.isFunction(a))return S.ready(a);if(a.selector!==v){this.selector=a.selector;this.context=a.context}return c.isArray(a)?this.setArray(a):c.makeArray(a,"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "df6bf22fb5439b74522411081a8ed4df2e058310f18b7abfc14272517814751a",
+            "glog-pfp-ruleFileCode/v1": "d4b61dc9ddbf6b03498bcdaee91e48f4e8b61b8f99a59a367dff9e181dc30317"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "d4b61dc9ddbf6b03498bcdaee91e48f4e8b61b8f99a59a367dff9e181dc30317"
+          },
+          "properties": {}
+        },
+        {
           "ruleId": "586b2343-5424-32af-9edb-06b1a0877da6",
           "kind": "fail",
           "level": "warning",
@@ -1088,41 +1075,6 @@
           },
           "fingerprints": {
             "glog-fp-ruleFileCode/v1": "11912fe98ab5ba0d6cbab8dc51eea2cf7c216e176e701fea1b24035dee4bb36b"
-          },
-          "properties": {}
-        },
-        {
-          "ruleId": "791b4bb2-98f5-3b1f-bda7-586857ae79f4",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "\"Logging Errors for Debugging and Security Monitoring in Empty Catch Block\""
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "penlab/js/jquery.min.js",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 27,
-                  "startColumn": 49,
-                  "endLine": 27,
-                  "endColumn": 59,
-                  "snippet": {
-                    "text": "c.ready);var a=false;try{a=z.frameElement==null}catch(b){}r.documentElement.doScroll&&a&&la()}}},isFunction:function(a){return $.call(a)===\"[object Function]\"},isArray:function(a){return $.call(a)===\"[object Array]\"},isPlainObject:function(a){if(!a||$.call(a)!==\"[object Object]\"||a.nodeType||a.setInterval)return false;if(a.constructor&&!aa.call(a,\"constructor\")&&!aa.call(a.constructor.prototype,\"isPrototypeOf\"))return false;var b;for(b in a);return b===v||aa.call(a,b)},isEmptyObject:function(a){for(var b in a)return false;"
-                  }
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "7db0ba1aba6909f56b7293de6127c04ebf5cd6ee0ad23768fa7992b9a9bbee77",
-            "glog-pfp-ruleFileCode/v1": "9b2060e648aeb4fc5e1d18748694b48237741a8604a20c49c1a5b1f6eb85066a"
-          },
-          "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "9b2060e648aeb4fc5e1d18748694b48237741a8604a20c49c1a5b1f6eb85066a"
           },
           "properties": {}
         },
@@ -1162,11 +1114,11 @@
           "properties": {}
         },
         {
-          "ruleId": "c92876ce-4343-31a7-8d8b-a4f6b14e6a36",
+          "ruleId": "791b4bb2-98f5-3b1f-bda7-586857ae79f4",
           "kind": "fail",
           "level": "warning",
           "message": {
-            "text": "Prototype Pollution Vulnerability Detected"
+            "text": "\"Logging Errors for Debugging and Security Monitoring in Empty Catch Block\""
           },
           "locations": [
             {
@@ -1176,23 +1128,58 @@
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "startLine": 69,
-                  "startColumn": 167,
-                  "endLine": 69,
-                  "endColumn": 173,
+                  "startLine": 27,
+                  "startColumn": 49,
+                  "endLine": 27,
+                  "endColumn": 59,
                   "snippet": {
-                    "text": "k){y=l[t.sizset];break}if(t.nodeType===1){if(!p){t.sizcache=k;t.sizset=q}if(typeof h!==\"string\"){if(t===h){y=true;break}}else if(o.filter(h,[t]).length>0){y=t;break}}t=t[g]}l[q]=y}}}var f=/((?:\\((?:\\([^()]+\\)|[^()]+)+\\)|\\[(?:\\[[^[\\]]*\\]|['\"][^'\"]*['\"]|[^[\\]'\"]+)+\\]|\\\\.|[^ >+~,(\\[\\\\]+)+|[>+~])(\\s*,\\s*)?((?:.|\\r|\\n)*)/g,e=0,i=Object.prototype.toString,j=false,n=true;[0,0].sort(function(){n=false;return 0});var o=function(g,h,k,l){k=k||[];var q=h=h||r;if(h.nodeType!==1&&h.nodeType!==9)return[];if(!g||"
+                    "text": "c.ready);var a=false;try{a=z.frameElement==null}catch(b){}r.documentElement.doScroll&&a&&la()}}},isFunction:function(a){return $.call(a)===\"[object Function]\"},isArray:function(a){return $.call(a)===\"[object Array]\"},isPlainObject:function(a){if(!a||$.call(a)!==\"[object Object]\"||a.nodeType||a.setInterval)return false;if(a.constructor&&!aa.call(a,\"constructor\")&&!aa.call(a.constructor.prototype,\"isPrototypeOf\"))return false;var b;for(b in a);return b===v||aa.call(a,b)},isEmptyObject:function(a){for(var b in a)return false;"
                   }
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "e615f6060433c0fbe2470a005c1f3a0bf9d0880def1697a945d04f069994f8bf",
-            "glog-pfp-ruleFileCode/v1": "c03caf630aefaebd026aa0bd4c412e41d4a3ea9f1d81510cbf1716332c1003cd"
+            "glog-pfp-ruleFileLineCode/v1": "7db0ba1aba6909f56b7293de6127c04ebf5cd6ee0ad23768fa7992b9a9bbee77",
+            "glog-pfp-ruleFileCode/v1": "9b2060e648aeb4fc5e1d18748694b48237741a8604a20c49c1a5b1f6eb85066a"
           },
           "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "c03caf630aefaebd026aa0bd4c412e41d4a3ea9f1d81510cbf1716332c1003cd"
+            "glog-fp-ruleFileCode/v1": "9b2060e648aeb4fc5e1d18748694b48237741a8604a20c49c1a5b1f6eb85066a"
+          },
+          "properties": {}
+        },
+        {
+          "ruleId": "df7aca11-8d8a-3dff-9627-4093cbd876a5",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Potential ReDoS vulnerability due to RegExp() being called with a `a` function argument; recommended to use hardcoded regexes, input validation, or a regex checking/sanitization library like 'recheck'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "penlab/js/jquery.min.js",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 5,
+                  "endLine": 57,
+                  "endColumn": 41,
+                  "snippet": {
+                    "text": "0,d=new RegExp(\"(^|\\\\.)\"+a[0]+\"(\\\\.|$)\");c.each(c.data(this,\"events\").live||{},function(){d.test(this.type)&&b++});b<1&&c.event.remove(this,a[0],na)}},special:{}},beforeunload:{setup:function(a,b,d){if(this.setInterval)this.onbeforeunload=d;return false},teardown:function(a,b){if(this.onbeforeunload===b)this.onbeforeunload=null}}}};c.Event=function(a){if(!this.preventDefault)return new c.Event(a);if(a&&a.type){this.originalEvent=a;this.type=a.type}else this.type=a;this.timeStamp=J();this[G]=true};"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "bc917a02ad44e5a2e2d0856d559d910a2e33fb6d6d0e53bc33520c1f9d4b2f0a",
+            "glog-pfp-ruleFileCode/v1": "dd9dd6932e094ec047373064d3e0e59b07e66785321e9edacf7b9b76607872c0"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "dd9dd6932e094ec047373064d3e0e59b07e66785321e9edacf7b9b76607872c0"
           },
           "properties": {}
         },
@@ -1232,7 +1219,42 @@
           "properties": {}
         },
         {
-          "ruleId": "1921fd27-9582-34b1-a89f-13f052ce565d",
+          "ruleId": "e567c519-d153-3bdc-908c-d3af737c8d0e",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Detected Insecure Deserialization Vulnerability"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "penlab/js/jquery.min.js",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 340,
+                  "endLine": 28,
+                  "endColumn": 367,
+                  "snippet": {
+                    "text": "return true},error:function(a){throw a;},parseJSON:function(a){if(typeof a!==\"string\"||!a)return null;if(/^[\\],:{}\\s]*$/.test(a.replace(/\\\\(?:[\"\\\\\\/bfnrt]|u[0-9a-fA-F]{4})/g,\"@\").replace(/\"[^\"\\\\\\n\\r]*\"|true|false|null|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?/g,\"]\").replace(/(?:^|:|,)(?:\\s*\\[)+/g,\"\")))return z.JSON&&z.JSON.parse?z.JSON.parse(a):(new Function(\"return \"+a))();else c.error(\"Invalid JSON: \"+a)},noop:function(){},globalEval:function(a){if(a&&Ra.test(a)){var b=r.getElementsByTagName(\"head\")[0]||"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "63625d0ea60ea23f41f7b13a3583bf3836d3726e6b2c962f0f042e7b8a8e955e",
+            "glog-pfp-ruleFileCode/v1": "9e219ee0568861febee47ceaf73964114281cf941dbfd91db1aaba8d736f760b"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "9e219ee0568861febee47ceaf73964114281cf941dbfd91db1aaba8d736f760b"
+          },
+          "properties": {}
+        },
+        {
+          "ruleId": "c92876ce-4343-31a7-8d8b-a4f6b14e6a36",
           "kind": "fail",
           "level": "warning",
           "message": {
@@ -1246,58 +1268,23 @@
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "startLine": 98,
-                  "startColumn": 324,
-                  "endLine": 98,
-                  "endColumn": 330,
+                  "startLine": 69,
+                  "startColumn": 167,
+                  "endLine": 69,
+                  "endColumn": 173,
                   "snippet": {
-                    "text": "e;if((this.length>1||db.test(f))&&cb.test(a))e=e.reverse();return this.pushStack(e,a,Q.call(arguments).join(\",\"))}});c.extend({filter:function(a,b,d){if(d)a=\":not(\"+a+\")\";return c.find.matches(a,b)},dir:function(a,b,d){var f=[];for(a=a[b];a&&a.nodeType!==9&&(d===v||a.nodeType!==1||!c(a).is(d));){a.nodeType===1&&f.push(a);a=a[b]}return f},nth:function(a,b,d){b=b||1;for(var f=0;a;a=a[d])if(a.nodeType===1&&++f===b)break;return a},sibling:function(a,b){for(var d=[];a;a=a.nextSibling)a.nodeType===1&&a!=="
+                    "text": "k){y=l[t.sizset];break}if(t.nodeType===1){if(!p){t.sizcache=k;t.sizset=q}if(typeof h!==\"string\"){if(t===h){y=true;break}}else if(o.filter(h,[t]).length>0){y=t;break}}t=t[g]}l[q]=y}}}var f=/((?:\\((?:\\([^()]+\\)|[^()]+)+\\)|\\[(?:\\[[^[\\]]*\\]|['\"][^'\"]*['\"]|[^[\\]'\"]+)+\\]|\\\\.|[^ >+~,(\\[\\\\]+)+|[>+~])(\\s*,\\s*)?((?:.|\\r|\\n)*)/g,e=0,i=Object.prototype.toString,j=false,n=true;[0,0].sort(function(){n=false;return 0});var o=function(g,h,k,l){k=k||[];var q=h=h||r;if(h.nodeType!==1&&h.nodeType!==9)return[];if(!g||"
                   }
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "612980295ac7cab9982095119f2975b45adcbb9dc118477608c634c121a113d0",
-            "glog-pfp-ruleFileCode/v1": "901a35353ae8335828be12e637d08e2e04b05c27e9dcf14ff68fd518b4ffa608"
+            "glog-pfp-ruleFileLineCode/v1": "e615f6060433c0fbe2470a005c1f3a0bf9d0880def1697a945d04f069994f8bf",
+            "glog-pfp-ruleFileCode/v1": "c03caf630aefaebd026aa0bd4c412e41d4a3ea9f1d81510cbf1716332c1003cd"
           },
           "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "901a35353ae8335828be12e637d08e2e04b05c27e9dcf14ff68fd518b4ffa608"
-          },
-          "properties": {}
-        },
-        {
-          "ruleId": "51fc1d05-eb34-3e66-9877-45242c92ed2a",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "\"XSS Vulnerabilities from User-Controlled Data in Methods like `innerHTML`, `outerHTML`, or `document.write`\""
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "penlab/js/jquery.min.js",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 105,
-                  "startColumn": 158,
-                  "endLine": 105,
-                  "endColumn": 177,
-                  "snippet": {
-                    "text": "[\"\",\"\"])[1].toLowerCase()]){a=a.replace(Ga,Ia);try{for(var b=0,d=this.length;b<d;b++)if(this[b].nodeType===1){c.cleanData(this[b].getElementsByTagName(\"*\"));this[b].innerHTML=a}}catch(f){this.empty().append(a)}}else c.isFunction(a)?this.each(function(e){var i=c(this),j=i.html();i.empty().append(function(){return a.call(this,e,j)})}):this.empty().append(a);return this},replaceWith:function(a){if(this[0]&&this[0].parentNode){if(c.isFunction(a))return this.each(function(b){var d=c(this),f=d.html();d.replaceWith(a.call(this,"
-                  }
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "8e93a4bff3e6b2b6e4631bcfd8c855f051a99389138cb1fff88f49c2f4f7b891",
-            "glog-pfp-ruleFileCode/v1": "24a9880862d9cd11b5f427106b621bd6c2ff3f035691e457b3693070a77b97cc"
-          },
-          "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "24a9880862d9cd11b5f427106b621bd6c2ff3f035691e457b3693070a77b97cc"
+            "glog-fp-ruleFileCode/v1": "c03caf630aefaebd026aa0bd4c412e41d4a3ea9f1d81510cbf1716332c1003cd"
           },
           "properties": {}
         },
@@ -1337,11 +1324,46 @@
           "properties": {}
         },
         {
-          "ruleId": "e567c519-d153-3bdc-908c-d3af737c8d0e",
+          "ruleId": "1921fd27-9582-34b1-a89f-13f052ce565d",
           "kind": "fail",
           "level": "warning",
           "message": {
-            "text": "\"Arbitrary Code Execution via Eval(variable) Detection\""
+            "text": "Prototype Pollution Vulnerability Detected"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "penlab/js/jquery.min.js",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 324,
+                  "endLine": 98,
+                  "endColumn": 330,
+                  "snippet": {
+                    "text": "e;if((this.length>1||db.test(f))&&cb.test(a))e=e.reverse();return this.pushStack(e,a,Q.call(arguments).join(\",\"))}});c.extend({filter:function(a,b,d){if(d)a=\":not(\"+a+\")\";return c.find.matches(a,b)},dir:function(a,b,d){var f=[];for(a=a[b];a&&a.nodeType!==9&&(d===v||a.nodeType!==1||!c(a).is(d));){a.nodeType===1&&f.push(a);a=a[b]}return f},nth:function(a,b,d){b=b||1;for(var f=0;a;a=a[d])if(a.nodeType===1&&++f===b)break;return a},sibling:function(a,b){for(var d=[];a;a=a.nextSibling)a.nodeType===1&&a!=="
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "612980295ac7cab9982095119f2975b45adcbb9dc118477608c634c121a113d0",
+            "glog-pfp-ruleFileCode/v1": "901a35353ae8335828be12e637d08e2e04b05c27e9dcf14ff68fd518b4ffa608"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "901a35353ae8335828be12e637d08e2e04b05c27e9dcf14ff68fd518b4ffa608"
+          },
+          "properties": {}
+        },
+        {
+          "ruleId": "2a1c8902-3442-3ffc-af15-cb38e409f048",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "\"Vulnerability in Dynamic Execution with Eval and Function\""
           },
           "locations": [
             {
@@ -1352,9 +1374,9 @@
                 },
                 "region": {
                   "startLine": 28,
-                  "startColumn": 340,
+                  "startColumn": 345,
                   "endLine": 28,
-                  "endColumn": 367,
+                  "endColumn": 353,
                   "snippet": {
                     "text": "return true},error:function(a){throw a;},parseJSON:function(a){if(typeof a!==\"string\"||!a)return null;if(/^[\\],:{}\\s]*$/.test(a.replace(/\\\\(?:[\"\\\\\\/bfnrt]|u[0-9a-fA-F]{4})/g,\"@\").replace(/\"[^\"\\\\\\n\\r]*\"|true|false|null|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?/g,\"]\").replace(/(?:^|:|,)(?:\\s*\\[)+/g,\"\")))return z.JSON&&z.JSON.parse?z.JSON.parse(a):(new Function(\"return \"+a))();else c.error(\"Invalid JSON: \"+a)},noop:function(){},globalEval:function(a){if(a&&Ra.test(a)){var b=r.getElementsByTagName(\"head\")[0]||"
                   }
@@ -1363,20 +1385,20 @@
             }
           ],
           "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "63625d0ea60ea23f41f7b13a3583bf3836d3726e6b2c962f0f042e7b8a8e955e",
-            "glog-pfp-ruleFileCode/v1": "9e219ee0568861febee47ceaf73964114281cf941dbfd91db1aaba8d736f760b"
+            "glog-pfp-ruleFileLineCode/v1": "5b839dd29408000c5d5be0031353280797431747a9edf7b445890fc57a3c9d27",
+            "glog-pfp-ruleFileCode/v1": "821722a2f2aabe72b247abd8c4dc1603918e9b2e421894bdb0094005c8423516"
           },
           "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "9e219ee0568861febee47ceaf73964114281cf941dbfd91db1aaba8d736f760b"
+            "glog-fp-ruleFileCode/v1": "821722a2f2aabe72b247abd8c4dc1603918e9b2e421894bdb0094005c8423516"
           },
           "properties": {}
         },
         {
-          "ruleId": "d4dae73d-8155-3e29-9b0d-8594e45ef2b9",
+          "ruleId": "51fc1d05-eb34-3e66-9877-45242c92ed2a",
           "kind": "fail",
           "level": "warning",
           "message": {
-            "text": "Potential XSS Vulnerability from User-Controlled Data in HTML String"
+            "text": "\"XSS Vulnerabilities from User-Controlled Data in Methods like `innerHTML`, `outerHTML`, or `document.write`\""
           },
           "locations": [
             {
@@ -1386,23 +1408,23 @@
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "startLine": 39,
-                  "startColumn": 394,
-                  "endLine": 39,
-                  "endColumn": 414,
+                  "startLine": 105,
+                  "startColumn": 158,
+                  "endLine": 105,
+                  "endColumn": 177,
                   "snippet": {
-                    "text": "a)});var d=a.split(\".\");d[1]=d[1]?\".\"+d[1]:\"\";if(b===v){var f=this.triggerHandler(\"getData\"+d[1]+\"!\",[d[0]]);if(f===v&&this.length)f=c.data(this[0],a);return f===v&&d[1]?this.data(d[0]):f}else return this.trigger(\"setData\"+d[1]+\"!\",[d[0],b]).each(function(){c.data(this,a,b)})},removeData:function(a){return this.each(function(){c.removeData(this,a)})}});c.extend({queue:function(a,b,d){if(a){b=(b||\"fx\")+\"queue\";var f=c.data(a,b);if(!d)return f||[];if(!f||c.isArray(d))f=c.data(a,b,c.makeArray(d));else f.push(d);"
+                    "text": "[\"\",\"\"])[1].toLowerCase()]){a=a.replace(Ga,Ia);try{for(var b=0,d=this.length;b<d;b++)if(this[b].nodeType===1){c.cleanData(this[b].getElementsByTagName(\"*\"));this[b].innerHTML=a}}catch(f){this.empty().append(a)}}else c.isFunction(a)?this.each(function(e){var i=c(this),j=i.html();i.empty().append(function(){return a.call(this,e,j)})}):this.empty().append(a);return this},replaceWith:function(a){if(this[0]&&this[0].parentNode){if(c.isFunction(a))return this.each(function(b){var d=c(this),f=d.html();d.replaceWith(a.call(this,"
                   }
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "cee99d21805b028b62be77f3d34cb67d185aeb872210b318ace95f030ebff76c",
-            "glog-pfp-ruleFileCode/v1": "451d7274f5d8e862175e034e58ed5864cd5bfb753e21b226a36d9690f61a373c"
+            "glog-pfp-ruleFileLineCode/v1": "8e93a4bff3e6b2b6e4631bcfd8c855f051a99389138cb1fff88f49c2f4f7b891",
+            "glog-pfp-ruleFileCode/v1": "24a9880862d9cd11b5f427106b621bd6c2ff3f035691e457b3693070a77b97cc"
           },
           "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "451d7274f5d8e862175e034e58ed5864cd5bfb753e21b226a36d9690f61a373c"
+            "glog-fp-ruleFileCode/v1": "24a9880862d9cd11b5f427106b621bd6c2ff3f035691e457b3693070a77b97cc"
           },
           "properties": {}
         },
@@ -1512,6 +1534,76 @@
           "properties": {}
         },
         {
+          "ruleId": "d4dae73d-8155-3e29-9b0d-8594e45ef2b9",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Potential XSS Vulnerability from User-Controlled Data in HTML String"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "penlab/js/jquery.min.js",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 394,
+                  "endLine": 39,
+                  "endColumn": 414,
+                  "snippet": {
+                    "text": "a)});var d=a.split(\".\");d[1]=d[1]?\".\"+d[1]:\"\";if(b===v){var f=this.triggerHandler(\"getData\"+d[1]+\"!\",[d[0]]);if(f===v&&this.length)f=c.data(this[0],a);return f===v&&d[1]?this.data(d[0]):f}else return this.trigger(\"setData\"+d[1]+\"!\",[d[0],b]).each(function(){c.data(this,a,b)})},removeData:function(a){return this.each(function(){c.removeData(this,a)})}});c.extend({queue:function(a,b,d){if(a){b=(b||\"fx\")+\"queue\";var f=c.data(a,b);if(!d)return f||[];if(!f||c.isArray(d))f=c.data(a,b,c.makeArray(d));else f.push(d);"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "cee99d21805b028b62be77f3d34cb67d185aeb872210b318ace95f030ebff76c",
+            "glog-pfp-ruleFileCode/v1": "451d7274f5d8e862175e034e58ed5864cd5bfb753e21b226a36d9690f61a373c"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "451d7274f5d8e862175e034e58ed5864cd5bfb753e21b226a36d9690f61a373c"
+          },
+          "properties": {}
+        },
+        {
+          "ruleId": "bd27e95e-60e3-30e4-b8ed-29946cd3ed3a",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "\"Potential XSS Vulnerability from User-Controlled Data in HTML String\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "penlab/js/jquery.min.js",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 280,
+                  "endLine": 44,
+                  "endColumn": 292,
+                  "snippet": {
+                    "text": "a.split(ca);e=o[i++];){n=f?n:!j.hasClass(e);j[n?\"addClass\":\"removeClass\"](e)}else if(d===\"undefined\"||d===\"boolean\"){this.className&&c.data(this,\"__className__\",this.className);this.className=this.className||a===false?\"\":c.data(this,\"__className__\")||\"\"}})},hasClass:function(a){a=\" \"+a+\" \";for(var b=0,d=this.length;b<d;b++)if((\" \"+this[b].className+\" \").replace(ya,\" \").indexOf(a)>-1)return true;return false},val:function(a){if(a===v){var b=this[0];if(b){if(c.nodeName(b,\"option\"))return(b.attributes.value||"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "9c14b3e87847a569b3655275bfddbb3d6e5b9505eea5afe88ccd3d7825e53019",
+            "glog-pfp-ruleFileCode/v1": "04f5c9e00b948a0d41ad9fd0ca4dc7bea1e94b6ba46405c8251d24e2664ed66a"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "04f5c9e00b948a0d41ad9fd0ca4dc7bea1e94b6ba46405c8251d24e2664ed66a"
+          },
+          "properties": {}
+        },
+        {
           "ruleId": "cbfd11ae-8fc5-3f42-83fb-b1e0c6beb544",
           "kind": "fail",
           "level": "warning",
@@ -1582,41 +1674,6 @@
           "properties": {}
         },
         {
-          "ruleId": "bd27e95e-60e3-30e4-b8ed-29946cd3ed3a",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "\"Potential XSS Vulnerability from User-Controlled Data in HTML String\""
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "penlab/js/jquery.min.js",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 44,
-                  "startColumn": 280,
-                  "endLine": 44,
-                  "endColumn": 292,
-                  "snippet": {
-                    "text": "a.split(ca);e=o[i++];){n=f?n:!j.hasClass(e);j[n?\"addClass\":\"removeClass\"](e)}else if(d===\"undefined\"||d===\"boolean\"){this.className&&c.data(this,\"__className__\",this.className);this.className=this.className||a===false?\"\":c.data(this,\"__className__\")||\"\"}})},hasClass:function(a){a=\" \"+a+\" \";for(var b=0,d=this.length;b<d;b++)if((\" \"+this[b].className+\" \").replace(ya,\" \").indexOf(a)>-1)return true;return false},val:function(a){if(a===v){var b=this[0];if(b){if(c.nodeName(b,\"option\"))return(b.attributes.value||"
-                  }
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "9c14b3e87847a569b3655275bfddbb3d6e5b9505eea5afe88ccd3d7825e53019",
-            "glog-pfp-ruleFileCode/v1": "04f5c9e00b948a0d41ad9fd0ca4dc7bea1e94b6ba46405c8251d24e2664ed66a"
-          },
-          "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "04f5c9e00b948a0d41ad9fd0ca4dc7bea1e94b6ba46405c8251d24e2664ed66a"
-          },
-          "properties": {}
-        },
-        {
           "ruleId": "450c56ab-1841-3cba-9a5f-31085c344970",
           "kind": "fail",
           "level": "warning",
@@ -1652,7 +1709,7 @@
           "properties": {}
         },
         {
-          "ruleId": "73d9463d-9560-3b47-8b0e-e7a4b7112601",
+          "ruleId": "0ca195e5-87c0-3b78-a088-2ba3ac11be99",
           "kind": "fail",
           "level": "warning",
           "message": {
@@ -1667,9 +1724,9 @@
                 },
                 "region": {
                   "startLine": 53,
-                  "startColumn": 154,
+                  "startColumn": 437,
                   "endLine": 53,
-                  "endColumn": 164,
+                  "endColumn": 447,
                   "snippet": {
                     "text": "b);f=d.parentNode||d.ownerDocument;try{if(!(d&&d.nodeName&&c.noData[d.nodeName.toLowerCase()]))if(d[\"on\"+e]&&d[\"on\"+e].apply(d,b)===false)a.result=false}catch(i){}if(!a.isPropagationStopped()&&f)c.event.trigger(a,b,f,true);else if(!a.isDefaultPrevented()){d=a.target;var j;if(!(c.nodeName(d,\"a\")&&e===\"click\")&&!(d&&d.nodeName&&c.noData[d.nodeName.toLowerCase()])){try{if(d[e]){if(j=d[\"on\"+e])d[\"on\"+e]=null;this.triggered=true;d[e]()}}catch(n){}if(j)d[\"on\"+e]=j;this.triggered=false}}},handle:function(a){var b,"
                   }
@@ -1678,11 +1735,11 @@
             }
           ],
           "partialFingerprints": {
-            "glog-pfp-ruleFileLineCode/v1": "ccec91e8163896c2c016419cba6778cb6138c718e3caed0c30ebc27c0c2d3a1e",
-            "glog-pfp-ruleFileCode/v1": "a3262a69f53e85df1d2e92fb45fed8407d12f3b5001232fbb46e5a9b978f462b"
+            "glog-pfp-ruleFileLineCode/v1": "1c05b79ed24935a79f38a32e44155b95cf30cacd42ff486e726316ae75a1655d",
+            "glog-pfp-ruleFileCode/v1": "bb51640b429c6f132c2792908a6e6b96c64c9003036f278d510c054c0878cc54"
           },
           "fingerprints": {
-            "glog-fp-ruleFileCode/v1": "a3262a69f53e85df1d2e92fb45fed8407d12f3b5001232fbb46e5a9b978f462b"
+            "glog-fp-ruleFileCode/v1": "bb51640b429c6f132c2792908a6e6b96c64c9003036f278d510c054c0878cc54"
           },
           "properties": {}
         },
@@ -1788,6 +1845,41 @@
           },
           "fingerprints": {
             "glog-fp-ruleFileCode/v1": "ccaafc318b78f2cf870e1b7ed5ba1a7f012f74761eb09ba452cd61ca97dd504f"
+          },
+          "properties": {}
+        },
+        {
+          "ruleId": "11a48ed7-985b-3af1-b550-aa3596449cb5",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "\"Logging Errors for Debugging and Security Monitoring in Empty Catch Block\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "penlab/js/jquery.min.js",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 67,
+                  "startColumn": 579,
+                  "endLine": 67,
+                  "endColumn": 589,
+                  "snippet": {
+                    "text": "live:i},e):c(this.context).unbind(oa(i,this.selector),e?{guid:e.guid+this.selector+i}:null)}return this}});c.each(\"blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error\".split(\" \"),function(a,b){c.fn[b]=function(d){return d?this.bind(b,d):this.trigger(b)};if(c.attrFn)c.attrFn[b]=true});z.attachEvent&&!z.addEventListener&&z.attachEvent(\"onunload\",function(){for(var a in c.cache)if(c.cache[a].handle)try{c.event.remove(c.cache[a].handle.elem)}catch(b){}});"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "6f0bcc1e96c32b24a40e45620343897e796414249c15bce4d81c6fac8f956cc9",
+            "glog-pfp-ruleFileCode/v1": "e1d9cf838e5fbcb17b4a4b14b31fba4a57b5cd827aa2a1f64fef1d575f03b7c1"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "e1d9cf838e5fbcb17b4a4b14b31fba4a57b5cd827aa2a1f64fef1d575f03b7c1"
           },
           "properties": {}
         },
